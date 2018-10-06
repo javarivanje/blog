@@ -1,9 +1,13 @@
 package com.slaverivanje.blog;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity
 public class Article {
 
+    @Id
     private String id;
 
     private String title;
@@ -17,6 +21,15 @@ public class Article {
     private Date createdDate = new Date();
 
     public Article() {
+    }
+
+    public Article(String id, String title, String link, String summary, String body, Date createdDate) {
+        this.id = id;
+        this.title = title;
+        this.link = link;
+        this.summary = summary;
+        this.body = body;
+        this.createdDate = createdDate;
     }
 
     public String getId() {
