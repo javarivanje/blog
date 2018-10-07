@@ -1,10 +1,7 @@
 package com.slaverivanje.blog;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -20,7 +17,7 @@ public class ArticleController {
     }
 
     @RequestMapping (method = RequestMethod.PUT, value = "/article/{id}")
-    public void saveArticle(Article article){
+    public void saveArticle(@RequestBody Article article, @PathVariable String id){
         articleService.saveArticle(article);
     }
 

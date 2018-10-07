@@ -79,4 +79,16 @@ public class Article {
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", link='" + link + '\'' +
+                ", summary='" + summary + '\'' +
+                ", body='" + body + '\'' +
+                ", createdDate=" + createdDate +
+                '}';
+    }
 }

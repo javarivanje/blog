@@ -13,6 +13,7 @@ public class ArticleService {
 
     public Article findArticle(String id){
         return articleRepository.findById(id).get();
+
     }
 
     public void saveArticle(Article article){
