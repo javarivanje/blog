@@ -15,8 +15,8 @@ public class CommentsService {
         return (ArrayList<Comments>) commentRepo.findByArticleId(id);
     }
 
-    public void saveComment(Comments comment){
-        commentRepo.save(comment);
+    public Comments saveComment(Comments comment){
+        return commentRepo.save(comment);
     }
 
     public ArrayList<Comments> findAllCommentsByAuthor(String author){

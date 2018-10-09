@@ -1,6 +1,16 @@
 package com.slaverivanje.blog;
 
 
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-
-import java.util.ArrayList;
-
-import static org.hamcrest.Matchers.is;
-import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(CommentsController.class)
@@ -54,8 +54,12 @@ public class CommentsControllerTests {
 
     @Test
     public void givenComment_whenPutComment_thenReturnThatComment() throws Exception {
+        Comments c1= new Comments("1","1","Ovo je test metoda GET-1","Milos");
 
         long id = 1;
+
+        given(commService.saveComment(any(Comments.class))).willReturn(c1);
+
 
         MockHttpServletRequestBuilder builder =
                 put("/article/" + id + "/comments")
@@ -66,9 +70,10 @@ public class CommentsControllerTests {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andDo(print());
-
+                .andDo(print())
+                .andExpect(jsonPath("$.author", is("Milos")));
     }
+
     private String getCommentInJson (long id){
         return "{\"id\":\"" + id + "\", \"articleId\":\"1\", \"text\":\"Ovo je test metoda GET-1\",\"author\":\"Milos\"}";
     }

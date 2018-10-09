@@ -18,8 +18,8 @@ public class CommentsController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/article/{id}/comments")
-    public void saveComment(@RequestBody Comments comment, @PathVariable String id){
-        commService.saveComment(comment);
+    public Comments saveComment(@RequestBody Comments comment, @PathVariable String id){
+         return commService.saveComment(comment);
     }
 
     @RequestMapping(method = RequestMethod.GET, value ="/article/{id}/comments/{author}")
