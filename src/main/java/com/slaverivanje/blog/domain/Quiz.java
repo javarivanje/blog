@@ -5,15 +5,15 @@ import java.util.List;
 
 public class Quiz {
 
-    private List<Quiz> questions;
+    private List<Question> questions;
     private String title;
     private String url;
 
-    public List<Quiz> getQuestions() {
+    public List<Question> getQuestions(Long questionNumber) {
         return questions;
     }
 
-    public void setQuestions(List<Quiz> questions) {
+    public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
 
