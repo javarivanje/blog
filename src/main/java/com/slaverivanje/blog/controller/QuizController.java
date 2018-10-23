@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class QuizController {
 
-    private static final String QUIZ_MAPPING = "/quiz";
+    public static final String QUIZ_MAPPING = "/quiz";
 
     private final IQuizService quizService;
 
