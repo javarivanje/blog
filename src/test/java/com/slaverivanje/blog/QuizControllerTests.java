@@ -1,8 +1,11 @@
 package com.slaverivanje.blog;
 
+
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,6 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(QuizController.class)
@@ -71,8 +75,7 @@ public class QuizControllerTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url", is("tests")));
-                //.andExpect(jsonPath("$.[1].author", is(c2.getAuthor())))
-                //.andExpect(jsonPath("$.[2].author", is(c3.getAuthor())));
+
 
     }
 
@@ -106,5 +109,24 @@ public class QuizControllerTests {
         quiz.setQuestions(questions);
         quiz.setTitle(title);
         quiz.setUrl(url);
+
+        given(quizService.answerQuestion("/tests", 1L, 1L)).willReturn(q);
+
+        MockHttpServletRequestBuilder builder =
+                post(QuizController.QUIZ_MAPPING + "/tests/1/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
+                        .characterEncoding("UTF-8")
+                        .content(getQuestionInJson());
+
+        mockMvc.perform(builder)
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.prompt", is("Ko testira kontroler?")));
+
     }
+        private String getQuestionInJson(){
+            return "{\"answers\":[\"Slavisa\",\"Milos\"],\"correct\":{\"index\":\"1\",\"text\":\"Milos!\"},\"image\":\"Slika\",\"number\":\"120\",\"prompt\":\"Ko testira kontroler?\"}";
+        }
+
 }

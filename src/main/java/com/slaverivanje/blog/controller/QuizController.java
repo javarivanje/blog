@@ -26,7 +26,7 @@ public class QuizController {
     @PostMapping(QUIZ_MAPPING + "/{url}/{questionNumber}/{answerIndex}")
     public Question answerQuestion(@PathVariable("url") String url,
         @PathVariable("questionNumber") Long questionNumber,
-        @PathVariable("answerIndex") Long answerIndex, @RequestBody Question question) {
+        @PathVariable("answerIndex") Long answerIndex) {
         return quizService.answerQuestion(url, questionNumber, answerIndex);
     }
 
