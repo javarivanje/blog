@@ -1,8 +1,8 @@
 package com.slaverivanje.blog;
 
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -17,6 +17,7 @@ import com.slaverivanje.blog.domain.Quiz;
 import com.slaverivanje.blog.service.QuizServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,13 +71,25 @@ public class QuizControllerTests {
 
         given(quizService.findByUrl("tests")).willReturn(quiz);
 
-        mockMvc.perform(get( QuizController.QUIZ_MAPPING + "/tests")
-                .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.url", is("tests")));
+        mockMvc.perform(get(QuizController.QUIZ_MAPPING + "/tests")
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.url", is("tests")));
 
 
+    }
+
+    @Ignore
+    @Test
+    public void givenQuizStaticFile_whenGetWithFilename_thenReturnJsonQuiz() throws Exception {
+        mockMvc.perform(get(QuizController.QUIZ_MAPPING + "/static/unicorns.json")
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.url", is("http://urbaninstitute.github.io/quick-quiz/")))
+            .andExpect(jsonPath("$.title", is("How well do you know real creatures?")))
+            .andExpect(jsonPath("$.questions", hasSize(3)));
     }
 
     @Test
@@ -113,20 +126,21 @@ public class QuizControllerTests {
         given(quizService.answerQuestion("/tests", 1L, 1L)).willReturn(q);
 
         MockHttpServletRequestBuilder builder =
-                post(QuizController.QUIZ_MAPPING + "/tests/1/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON_UTF8)
-                        .characterEncoding("UTF-8")
-                        .content(getQuestionInJson());
+            post(QuizController.QUIZ_MAPPING + "/tests/1/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .characterEncoding("UTF-8")
+                .content(getQuestionInJson());
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("$.prompt", is("Ko testira kontroler?")));
+            .andExpect(status().isOk())
+            .andDo(print())
+            .andExpect(jsonPath("$.prompt", is("Ko testira kontroler?")));
 
     }
-        private String getQuestionInJson(){
-            return "{\"answers\":[\"Slavisa\",\"Milos\"],\"correct\":{\"index\":\"1\",\"text\":\"Milos!\"},\"image\":\"Slika\",\"number\":\"120\",\"prompt\":\"Ko testira kontroler?\"}";
-        }
+
+    private String getQuestionInJson() {
+        return "{\"answers\":[\"Slavisa\",\"Milos\"],\"correct\":{\"index\":\"1\",\"text\":\"Milos!\"},\"image\":\"Slika\",\"number\":\"120\",\"prompt\":\"Ko testira kontroler?\"}";
+    }
 
 }
