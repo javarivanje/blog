@@ -21,9 +21,9 @@ public class QuizController {
         this.quizService = quizService;
     }
 
-    @GetMapping(QUIZ_MAPPING + "/{url}")
-    public Quiz findQuiz(@PathVariable String url) {
-        return quizService.findByUrl(url);
+    @GetMapping(QUIZ_MAPPING + "/{url}/{url2}")
+    public Quiz findQuiz(@PathVariable("url") String url, @PathVariable("url2") String url2 ) {
+        return quizService.findByUrl(url+url2);
     }
 
     @PostMapping(QUIZ_MAPPING + "/{url}/{questionNumber}/{answerIndex}")

@@ -50,4 +50,15 @@ public class Question {
     public void setPrompt(String prompt) {
         this.prompt = prompt;
     }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "answers=" + answers +
+                ", correct=" + correct +
+                ", image='" + image + '\'' +
+                ", number=" + number +
+                ", prompt='" + prompt + '\'' +
+                '}';
+    }
 }

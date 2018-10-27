@@ -10,11 +10,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.slaverivanje.blog.controller.QuizController;
 import com.slaverivanje.blog.domain.Correct;
 import com.slaverivanje.blog.domain.Question;
 import com.slaverivanje.blog.domain.Quiz;
 import com.slaverivanje.blog.service.QuizServiceImpl;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Ignore;
@@ -80,9 +83,15 @@ public class QuizControllerTests {
 
     }
 
-    @Ignore
+
     @Test
     public void givenQuizStaticFile_whenGetWithFilename_thenReturnJsonQuiz() throws Exception {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Quiz quiz = objectMapper.readValue(new File("C:\\Users\\Milos\\Desktop\\blog\\src\\main\\resources\\static\\quiz\\unicorns.json"), Quiz.class);
+
+        given(quizService.findByUrl(QuizController.QUIZ_MAPPING + "/static"+"/unicorns.json")).willReturn(quiz);
+
         mockMvc.perform(get(QuizController.QUIZ_MAPPING + "/static/unicorns.json")
             .contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
@@ -135,12 +144,12 @@ public class QuizControllerTests {
         mockMvc.perform(builder)
             .andExpect(status().isOk())
             .andDo(print())
-            .andExpect(jsonPath("$.prompt", is("Ko testira kontroler?")));
+            .andExpect(jsonPath("$.[0].answers", is("Milos")));
 
     }
 
     private String getQuestionInJson() {
-        return "{\"answers\":[\"Slavisa\",\"Milos\"],\"correct\":{\"index\":\"1\",\"text\":\"Milos!\"},\"image\":\"Slika\",\"number\":\"120\",\"prompt\":\"Ko testira kontroler?\"}";
+        return "{\"answers\":[\"Slavisa\",\"Milos\"],\"correct\":{\"index\":1,\"text\":\"Milos!\"},\"image\":\"Slika\",\"number\":120,\"prompt\":\"Ko testira kontroler?\"}";
     }
 
 }

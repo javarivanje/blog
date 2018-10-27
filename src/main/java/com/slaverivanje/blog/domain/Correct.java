@@ -22,4 +22,11 @@ public class Correct {
         this.text = text;
     }
 
+    @Override
+    public String toString() {
+        return "Correct{" +
+                "index=" + index +
+                ", text='" + text + '\'' +
+                '}';
+    }
 }
