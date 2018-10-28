@@ -4,23 +4,20 @@ package com.slaverivanje.blog;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.slaverivanje.blog.controller.QuizController;
 import com.slaverivanje.blog.domain.Correct;
 import com.slaverivanje.blog.domain.Question;
 import com.slaverivanje.blog.domain.Quiz;
-import com.slaverivanje.blog.service.QuizServiceImpl;
-
-import java.io.File;
+import com.slaverivanje.blog.service.IQuizService;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +36,7 @@ public class QuizControllerTests {
     private MockMvc mockMvc;
 
     @MockBean
-    private QuizServiceImpl quizService;
+    private IQuizService quizService;
 
     @Test
     public void givenQuiz_whenGetQuiz_thenReturnJsonQuiz() throws Exception {
@@ -86,12 +83,6 @@ public class QuizControllerTests {
 
     @Test
     public void givenQuizStaticFile_whenGetWithFilename_thenReturnJsonQuiz() throws Exception {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        Quiz quiz = objectMapper.readValue(new File("C:\\Users\\Milos\\Desktop\\blog\\src\\main\\resources\\static\\quiz\\unicorns.json"), Quiz.class);
-
-        given(quizService.findByUrl(QuizController.QUIZ_MAPPING + "/static"+"/unicorns.json")).willReturn(quiz);
-
         mockMvc.perform(get(QuizController.QUIZ_MAPPING + "/static/unicorns.json")
             .contentType(MediaType.APPLICATION_JSON_UTF8))
             .andDo(print())
@@ -132,7 +123,8 @@ public class QuizControllerTests {
         quiz.setTitle(title);
         quiz.setUrl(url);
 
-        given(quizService.answerQuestion("/tests", 1L, 1L)).willReturn(q);
+        Long one = 1L;
+        when(quizService.answerQuestion("tests", one, one)).thenReturn(q);
 
         MockHttpServletRequestBuilder builder =
             post(QuizController.QUIZ_MAPPING + "/tests/1/1")
@@ -144,7 +136,7 @@ public class QuizControllerTests {
         mockMvc.perform(builder)
             .andExpect(status().isOk())
             .andDo(print())
-            .andExpect(jsonPath("$.[0].answers", is("Milos")));
+            .andExpect(jsonPath("$.answers[1]", is("Milos")));
 
     }
 
