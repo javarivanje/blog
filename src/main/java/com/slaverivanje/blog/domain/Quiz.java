@@ -10,6 +10,10 @@ public class Quiz {
     private String title;
     private String url;
 
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
     public List<Question> getQuestions(Long questionNumber) {
         return questions;
     }
