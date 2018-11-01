@@ -1,8 +1,9 @@
-package com.slaverivanje.blog;
+package com.slaverivanje.blog.controller;
 
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -11,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.slaverivanje.blog.controller.QuizController;
 import com.slaverivanje.blog.domain.Correct;
 import com.slaverivanje.blog.domain.Question;
 import com.slaverivanje.blog.domain.Quiz;
@@ -89,7 +89,13 @@ public class QuizControllerTests {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.url", is("http://urbaninstitute.github.io/quick-quiz/")))
             .andExpect(jsonPath("$.title", is("How well do you know real creatures?")))
-            .andExpect(jsonPath("$.questions", hasSize(3)));
+            .andExpect(jsonPath("$.questions", hasSize(3)))
+            .andExpect(jsonPath("$.questions[0].answers", hasSize(4)))
+            .andExpect(jsonPath("$.questions[0].answers[0]", is("Loch Ness Monster")))
+            .andExpect(jsonPath("$.questions[0].correct.index", is(2)))
+            .andExpect(jsonPath("$.questions[0].correct.text", startsWith("The unicorn is a mythical creature")))
+            .andExpect(jsonPath("$.questions[0].number",is(1)))
+            .andExpect(jsonPath("$.questions[0].prompt",is("Which of the following is the most real?")));
     }
 
     @Test

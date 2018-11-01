@@ -1,4 +1,4 @@
-package com.slaverivanje.blog;
+package com.slaverivanje.blog.controller;
 
 
 import static org.hamcrest.Matchers.is;
@@ -10,6 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.slaverivanje.blog.Comments;
+import com.slaverivanje.blog.CommentsController;
+import com.slaverivanje.blog.CommentsService;
 import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.runner.RunWith;

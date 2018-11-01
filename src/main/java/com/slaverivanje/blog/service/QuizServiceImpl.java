@@ -2,6 +2,7 @@ package com.slaverivanje.blog.service;
 
 import com.slaverivanje.blog.domain.Question;
 import com.slaverivanje.blog.domain.Quiz;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,12 +12,13 @@ public class QuizServiceImpl implements IQuizService {
 
     @Override
     public Quiz findByUrl(String url) {
-        if (quiz.getUrl().equals(url)){
-            return quiz;
-        }
-        else System.out.println("Quiz does not exist!");
+        ClassPathResource quizResource = new ClassPathResource("/static/quiz/" + url + ".adoc");
+        return parse(quizResource);
+    }
+
+    private Quiz parse(ClassPathResource quizResource) {
+        // TODO: ovde treba da dodas logiku
         return null;
-        //return null;
     }
 
     @Override
