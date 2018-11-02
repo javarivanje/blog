@@ -34,7 +34,7 @@ public class QuizControllerIT {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.url", is("http://urbaninstitute.github.io/quick-quiz/")))
             .andExpect(jsonPath("$.title", is("How well do you know real creatures?")))
-            .andExpect(jsonPath("$.questions", hasSize(3)))
+            .andExpect(jsonPath("$.questions", hasSize(2)))
             .andExpect(jsonPath("$.questions[0].answers", hasSize(4)))
             .andExpect(jsonPath("$.questions[0].answers[0]", is("Loch Ness Monster")))
             .andExpect(jsonPath("$.questions[0].correct.index", is(2)))
