@@ -15,6 +15,7 @@ public class QuizParsing {
 
     public static Quiz quizParse(Scanner sc) {
         Quiz quiz = new Quiz();
+        List<Question> pitanja = new ArrayList<>();
         String str;
         String [] stringNiz;
         while(sc.hasNextLine()){
@@ -22,37 +23,37 @@ public class QuizParsing {
             if (str!=null && str.equals(":title:")){
                 str = sc.nextLine();
                 quiz.setTitle(str.substring(2,str.length()-1));
-                continue;
+                sc.nextLine();
             }
             if(str!=null && str.equals(":url:")){
                 str = sc.nextLine();
                 quiz.setUrl(str.substring(2,str.length()-1));
-                continue;
+                sc.nextLine();
             }
             if(str.equals("___")){
+                sc.nextLine();
                 long brojac = 0;
                 Correct correct = new Correct();
                 Question questions = new Question();
                 List <String> answers = new ArrayList<>();
                 str = sc.nextLine();
-                questions.setPrompt(str.substring(0, str.length()-1));
+                questions.setPrompt(str.substring(0, str.length()-2));
                 while(!sc.hasNext("___")) {
                     brojac++;
-                    //str = sc.nextLine();
+                    str = sc.nextLine();
                     stringNiz = str.split("::");
                     if(stringNiz.length==2){
-                        answers.add(stringNiz[0].substring(1,stringNiz.length-1));
-                        correct.setIndex(brojac);
-                        correct.setText(stringNiz[1].substring(1,stringNiz.length-1));
-                    }
-                    answers.add(str.substring(1,str.length()-1));
-                    str = sc.nextLine();
+                        answers.add(stringNiz[0].substring(1,stringNiz[0].length()-1));
+                        correct.setIndex(brojac-1);
+                        correct.setText(stringNiz[1].substring(1,stringNiz[1].length()-1));
+                    } else answers.add(str.substring(1,str.length()-1));
                 }
                 questions.setAnswers(answers);
                 questions.setCorrect(correct);
+                pitanja.add(questions);
             }
-            sc.nextLine();
         }
+        quiz.setQuestions(pitanja);
         System.out.println(quiz);
         return quiz;
     }
