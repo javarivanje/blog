@@ -23,12 +23,10 @@ public class QuizParsing {
             if (str!=null && str.equals(":title:")){
                 str = sc.nextLine();
                 quiz.setTitle(str.substring(2,str.length()-1));
-                sc.nextLine();
             }
             if(str!=null && str.equals(":url:")){
                 str = sc.nextLine();
                 quiz.setUrl(str.substring(2,str.length()-1));
-                sc.nextLine();
             }
             if(str.equals("___")){
                 sc.nextLine();
