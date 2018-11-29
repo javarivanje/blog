@@ -39,6 +39,9 @@ public class QuizParsing {
                 str = sc.nextLine();
                 questions.setPrompt(str.substring(0, str.length()-2));
                 while(!sc.hasNext("___")) {
+                    if(!sc.hasNextLine()){
+                        break;
+                    }
                     brojac++;
                     str = sc.nextLine();
                     stringNiz = str.split("::");
